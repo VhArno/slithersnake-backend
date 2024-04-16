@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users_matches', function (Blueprint $table) {
+        Schema::create('users_duels', function (Blueprint $table) {
             $table->foreignId('users_id')->constrained();
-            $table->foreignId('matches_id')->constrained();
-            $table->primary(['users_id', 'matches_id']);
+            $table->foreignId('duels_id')->constrained();
+            $table->primary(['users_id', 'duels_id']);
             $table->integer('score');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_matches');
+        Schema::dropIfExists('users_duels');
     }
 };
