@@ -15,22 +15,22 @@ class GamemodeSeeder extends Seeder
     {
         Gamemode::create([
             'name' => 'standard',
-            'image' => 'storage/mode_standaard.png',
+            'image' => 'http://localhost:8080/storage/mode_standaard.png',
         ]);
 
         Gamemode::create([
             'name' => 'power-ups',
-            'image' => 'storage/mode_power-ups.png',
+            'image' => 'http://localhost:8080/storage/mode_power-ups.png',
         ]);
 
         Gamemode::create([
             'name' => 'limited-time',
-            'image' => 'storage/mode_limited-time.png',
+            'image' => 'http://localhost:8080/storage/mode_limited-time.png',
         ]);
 
         Gamemode::create([
             'name' => 'unlimited-time',
-            'image' => 'storage/mode_unlimited-time.png',
+            'image' => 'http://localhost:8080/storage/mode_unlimited-time.png',
         ]);
     }
 }

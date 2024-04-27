@@ -36,7 +36,7 @@ Route::group(['prefix' => '/gamemodes'], function() {
 
 // maps routes
 Route::group(['prefix' => '/maps'], function() {
-    Route::get('/maps', [GameController::class, 'getMaps']);
+    Route::get('/', [GameController::class, 'getMaps']);
     Route::get('/maps/{id}', [GameController::class, 'getMap'])->whereNumber('id');
 });
 
