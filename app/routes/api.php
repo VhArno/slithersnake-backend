@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +16,6 @@ use App\Http\Controllers\GameController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 // skins routes
 Route::group(['prefix' => '/skins'], function() {
@@ -44,9 +41,11 @@ Route::group(['prefix' => '/maps'], function() {
 Route::post('/duels', [GameController::class, 'createDuels']);
 
 // user routes
-Route::get('/users/{id}', [UserController::class, 'getUser'])->whereNumber('id');
-Route::get('/users/{id}/skins', [UserController::class, 'getUserSkins'])->whereNumber('id');
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
+Route::middleware('auth:sanctum')->patch('/users/{id}', [AuthController::class, 'patchUser'])->whereNumber('id');
+Route::middleware('auth:sanctum')->delete('/users/{id}', [AuthController::class, 'deleteUser'])->whereNumber('id');
+Route::middleware('auth:sanctum')->get('/users/{id}/skins', [AuthController::class, 'getUserSkins'])->whereNumber('id');
 
-Route::post('/users', [UserController::class, 'createUser']);
-Route::patch('/users/{id}', [UserController::class, 'patchUser'])->whereNumber('id');
-Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->whereNumber('id');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/register', [AuthController::class, 'createUser']);
