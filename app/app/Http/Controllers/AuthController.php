@@ -30,6 +30,11 @@ class AuthController extends Controller
             'username' => 'required|string|unique:users',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6',
+            'level' => 'nullable|numeric',
+            'highscore' => 'nullable|numeric',
+            'games_played' => 'nullable|numeric',
+            'games_won' => 'nullable|numeric',
+            'players_killed' => 'nullable|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -37,11 +42,15 @@ class AuthController extends Controller
         }
 
         $user = new User();
-        $user->firstname = $request->input('firstname');
-        $user->lastname = $request->input('lastname');
+        $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
-        $user->role_id = 1;
+
+        $user->level = 1;
+        $user->highscore = 0;
+        $user->games_played = 0;
+        $user->games_won = 0;
+        $user->players_killed = 0;
 
         $user->save();
 
@@ -57,6 +66,11 @@ class AuthController extends Controller
             'username' => 'nullable|string|unique:users',
             'email' => 'nullable|string|email|unique:users',
             'password' => 'nullable|string|min:5',
+            /*'level' => 'nullable|numeric',
+            'highscore' => 'nullable|numeric',
+            'games_played' => 'nullable|numeric',
+            'games_won' => 'nullable|numeric',
+            'players_killed' => 'nullable|numeric',*/
         ]);
 
         if ($validator->fails()) {
@@ -68,6 +82,12 @@ class AuthController extends Controller
         if ($request->filled('username')) $user->username = $request->input('username');
         if ($request->filled('email')) $user->email = $request->input('email');
         if ($request->filled('password')) $user->password = $request->input('password');
+        
+        /*if ($request->filled('level')) $user->level = $request->input('level');
+        if ($request->filled('highscore')) $user->highscore = $request->input('highscore');
+        if ($request->filled('games_played')) $user->games_played = $request->input('games_played');
+        if ($request->filled('games_won')) $user->games_won = $request->input('games_won');
+        if ($request->filled('players_killed')) $user->players_killed = $request->input('players_killed');*/
 
         $user->save();
 
