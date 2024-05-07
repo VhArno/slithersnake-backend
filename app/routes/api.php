@@ -41,14 +41,10 @@ Route::group(['prefix' => '/maps'], function() {
 Route::post('/duels', [GameController::class, 'createDuels']);
 
 // user routes
-//Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::middleware('auth:sanctum')->patch('/users/{id}', [AuthController::class, 'patchUser'])->whereNumber('id');
-Route::middleware('auth:sanctum')->delete('/users/{id}', [AuthController::class, 'deleteUser'])->whereNumber('id');
-Route::middleware('auth:sanctum')->get('/users/{id}/skins', [AuthController::class, 'getUserSkins'])->whereNumber('id');
-
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::middleware('auth:web')->post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('/register', [AuthController::class, 'createUser']);
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+
+Route::get('/user', [AuthController::class, 'getUser'])->middleware('auth:sanctum');
+Route::patch('/user', [AuthController::class, 'patchUser'])->middleware('auth:sanctum');
+Route::delete('/user', [AuthController::class, 'deleteUser'])->middleware('auth:sanctum');
