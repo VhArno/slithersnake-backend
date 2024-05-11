@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('skins', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('image');
-            $table->boolean('featured');
+            $table->text('image_head');
+            $table->text('image_body');
+            $table->boolean('featured')->nullable();
             $table->text('unlock_condition')->nullable();
             $table->integer('unlock_value')->nullable();
         });

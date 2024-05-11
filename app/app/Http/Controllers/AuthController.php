@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skin;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class AuthController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
+        $user->skins = Skin::all();
 
         $user->level = 1;
         $user->highscore = 0;
@@ -65,7 +67,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'nullable|string|unique:users',
             'email' => 'nullable|string|email|unique:users',
-            'password' => 'nullable|string|min:5',
             /*'level' => 'nullable|numeric',
             'highscore' => 'nullable|numeric',
             'games_played' => 'nullable|numeric',
@@ -81,7 +82,6 @@ class AuthController extends Controller
 
         if ($request->filled('username')) $user->username = $request->input('username');
         if ($request->filled('email')) $user->email = $request->input('email');
-        if ($request->filled('password')) $user->password = $request->input('password');
         
         /*if ($request->filled('level')) $user->level = $request->input('level');
         if ($request->filled('highscore')) $user->highscore = $request->input('highscore');

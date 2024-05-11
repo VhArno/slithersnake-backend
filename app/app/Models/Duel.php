@@ -13,6 +13,11 @@ class Duel extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     // relations
     public function map(): HasOne {
         return $this->hasOne(Map::class);

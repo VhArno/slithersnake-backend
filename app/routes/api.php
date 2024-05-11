@@ -22,7 +22,6 @@ Route::group(['prefix' => '/skins'], function() {
     Route::get('/', [GameController::class, 'getAllSkins']);
     Route::get('/{id}', [GameController::class, 'getSkin'])->whereNumber('id');
     Route::get('/featured', [GameController::class, 'getFeaturedSkins']);
-    //Route::get('/user/{id}', [GameController::class, 'getUserSkins'])->whereNumber('id');
 });
 
 // gamemodes routes
@@ -39,6 +38,7 @@ Route::group(['prefix' => '/maps'], function() {
 
 // duels routes
 Route::post('/duels', [GameController::class, 'createDuels']);
+Route::patch('/duels', [GameController::class, 'patchDuel']);
 
 // user routes
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -48,3 +48,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::get('/user', [AuthController::class, 'getUser'])->middleware('auth:sanctum');
 Route::patch('/user', [AuthController::class, 'patchUser'])->middleware('auth:sanctum');
 Route::delete('/user', [AuthController::class, 'deleteUser'])->middleware('auth:sanctum');
+
+Route::delete('/user/duel', [AuthController::class, 'addDuelUser'])->middleware('auth:sanctum');

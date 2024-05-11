@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MapSeeder::class,
             GamemodeSeeder::class,
+            AccountSeeder::class,
+            SkinSeeder::class,
         ]);
     }
 }
