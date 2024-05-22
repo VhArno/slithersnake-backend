@@ -17,7 +17,8 @@ class SkinResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => $this->image,
+            'image_head' => $this->image_head,
+            'image_body' => $this->image_body,
             'featured' => $this->featured,
         ];
     }
