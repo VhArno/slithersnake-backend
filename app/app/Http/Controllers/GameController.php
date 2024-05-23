@@ -6,6 +6,7 @@ use App\Http\Resources\SkinResource;
 use App\Http\Resources\GamemodeResource;
 use App\Http\Resources\MapResource;
 use App\Models\Duel;
+use App\Models\User;
 use App\Models\Gamemode;
 use App\Models\Map;
 use App\Models\Skin;
@@ -47,8 +48,26 @@ class GameController extends Controller
     }
 
     // Duels function
-    function addDuelUser() {
-        
+    function addDuelUser(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'duel_id' => 'required|numeric|exists:duels,id',
+            'score' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Invalid request data'], 422);
+        }
+
+        $user = $request->user();
+        $duel = Duel::find($request->input('duel_id'));
+
+        $pivotData = [
+            'score' => $request->input('score')
+        ];
+
+        $user->duels()->attach($duel->id, $pivotData);
+
+        return response()->json(['message' => 'User has been added to duel'], 201);
     }
 
     function createDuels(Request $request) {
@@ -62,22 +81,36 @@ class GameController extends Controller
         }
 
         $duel = new Duel();
+
         $duel->start_time = Carbon::now();
         $duel->end_time = null;
         $duel->gamemodes_id = $request->input('gamemodes_id');
         $duel->maps_id = $request->input('maps_id');
+
+        $duel->save();
+
+        return response()->json(['message' => 'Duel has been created', 'data' => ['duel_id' => $duel->id]], 201);
     }
 
     function patchDuel(Request $request) {
         $validator = Validator::make($request->all(), [
-            'end_time' => 'required'
+            'duel_id' => 'required|numeric|exists:duels,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message' => 'Invalid request data'], 422);
         }
 
-        $duel = new Duel();
-        $duel->end_time = Carbon::now();
+        $duel = Duel::findOrFail($request->input('duel_id'));
+
+        if($duel->end_time == null) {
+            $duel->end_time = Carbon::now();
+            $duel->save();
+        } else {
+            return response()->json(['message' => 'Duel has already been concluded'], 200);
+        }
+        
+
+        return response()->json(['message' => 'Duel enddate has been set'], 200);
     }
 }
