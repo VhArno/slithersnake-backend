@@ -51,7 +51,9 @@ class GameController extends Controller
     function addDuelUser(Request $request) {
         $validator = Validator::make($request->all(), [
             'duel_id' => 'required|numeric|exists:duels,id',
-            'score' => 'required|numeric'
+            'score' => 'required|numeric',
+            'won' => 'required|boolean',
+            'kills' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -66,6 +68,13 @@ class GameController extends Controller
         ];
 
         $user->duels()->attach($duel->id, $pivotData);
+
+        // update user stats
+        $user->level = 0;
+        $user->highscore = $user->highscore < $request->input('score') ? $request->input('score') : $user->highscore;
+        $user->games_played += 1;
+        if($request->input('won') == true) $user->games_won += 1;
+        $user->players_killed += $request->input('kills');
 
         return response()->json(['message' => 'User has been added to duel'], 201);
     }
