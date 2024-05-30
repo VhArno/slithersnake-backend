@@ -48,37 +48,6 @@ class GameController extends Controller
     }
 
     // Duels function
-    function addDuelUser(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'duel_id' => 'required|numeric|exists:duels,id',
-            'score' => 'required|numeric',
-            'won' => 'required|boolean',
-            'kills' => 'required|numeric'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid request data'], 422);
-        }
-
-        $user = $request->user();
-        $duel = Duel::find($request->input('duel_id'));
-
-        $pivotData = [
-            'score' => $request->input('score')
-        ];
-
-        $user->duels()->attach($duel->id, $pivotData);
-
-        // update user stats
-        $user->level = 0;
-        $user->highscore = $user->highscore < $request->input('score') ? $request->input('score') : $user->highscore;
-        $user->games_played += 1;
-        if($request->input('won') == true) $user->games_won += 1;
-        $user->players_killed += $request->input('kills');
-
-        return response()->json(['message' => 'User has been added to duel'], 201);
-    }
-
     function createDuels(Request $request) {
         $validator = Validator::make($request->all(), [
             'gamemodes_id' => 'required|numeric|exists:gamemodes,id',
@@ -121,5 +90,55 @@ class GameController extends Controller
         
 
         return response()->json(['message' => 'Duel enddate has been set'], 200);
+    }
+
+    function addDuelUser(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'duel_id' => 'required|numeric|exists:duels,id',
+            'score' => 'required|numeric',
+            'won' => 'required|boolean',
+            'kills' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Invalid request data'], 422);
+        }
+
+        $user = $request->user();
+        $duel = Duel::find($request->input('duel_id'));
+
+        $pivotData = [
+            'score' => $request->input('score'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ];
+
+        $user->duels()->attach($duel->id, $pivotData);
+
+        // update user stats
+        $score = $request->score;
+
+        $baseProbability = 0.1; // 10% base chance
+        $scalingFactor = 0.005; // 0.5% additional chance per point of score
+    
+        $probability = $baseProbability + ($scalingFactor * $score);
+    
+        if ($probability > 1) {
+            $probability = 1;
+        }
+    
+        $randomFloat = mt_rand() / mt_getrandmax();
+    
+        if ($randomFloat < $probability) {
+            $user->level += 1;// Increase the user's level
+        }
+
+        $user->highscore = $user->highscore < $request->input('score') ? $request->input('score') : $user->highscore;
+        $user->games_played += 1;
+        if($request->input('won') == true) $user->games_won += 1;
+        $user->players_killed += $request->input('kills');
+        $user->save();
+
+        return response()->json(['message' => 'User has been added to duel'], 201);
     }
 }

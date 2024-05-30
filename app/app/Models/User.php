@@ -52,6 +52,6 @@ class User extends Authenticatable
     }
 
     public function duels(): BelongsToMany {
-        return $this->belongsToMany(Duel::class);
+        return $this->belongsToMany(Duel::class, 'users_duels', 'users_id', 'duels_id');
     }
 }
