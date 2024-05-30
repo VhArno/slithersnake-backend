@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Duel extends Model
@@ -19,12 +19,12 @@ class Duel extends Model
     ];
 
     // relations
-    public function map(): HasOne {
-        return $this->hasOne(Map::class);
+    public function map(): BelongsTo  {
+        return $this->belongsTo(Map::class, 'maps_id', 'id');
     }
 
-    public function gamemode(): HasOne {
-        return $this->hasOne(Gamemode::class);
+    public function gamemode(): BelongsTo  {
+        return $this->belongsTo(Gamemode::class, 'gamemodes_id', 'id');
     }
 
     public function users(): BelongsToMany {

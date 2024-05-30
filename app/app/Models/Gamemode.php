@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gamemode extends Model
 {
@@ -13,7 +13,7 @@ class Gamemode extends Model
     public $timestamps = false;
 
     // relations
-    public function duels(): BelongsToMany {
-        return $this->belongsToMany(Duel::class);
+    public function duels(): HasMany {
+        return $this->hasMany(Duel::class);
     }
 }

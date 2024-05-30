@@ -14,6 +14,11 @@ class DuelResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'start_time' => $this->start_time,
+            'gamemode' => new GamemodeResource($this->gamemode),
+            'map' => new MapResource($this->map),
+        ];
     }
 }

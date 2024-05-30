@@ -17,6 +17,11 @@ class AccountSeeder extends Seeder
             'username' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => 'Azerty123',
+            'level' => 0,
+            'highscore' => 0,
+            'games_played' => 0,
+            'games_won' => 0,
+            'players_killed' => 0,
         ]);
     }
 }

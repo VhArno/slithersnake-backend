@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\Skin;
 use App\Models\User;
 use Illuminate\Http\Response;
@@ -60,7 +61,7 @@ class AuthController extends Controller
     }
 
     public function getUser(Request $request) {
-        return $request->user();
+        return new UserResource($request->user());
     }
 
     public function patchUser(Request $request) {
