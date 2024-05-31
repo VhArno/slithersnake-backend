@@ -14,6 +14,6 @@ class Skin extends Model
 
     // relations
     public function users(): BelongsToMany {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'users_has_skins', 'skins_id', 'users_id');
     }
 }

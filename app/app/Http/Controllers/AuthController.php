@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -47,13 +48,21 @@ class AuthController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
-        $user->skins = Skin::all();
 
         $user->level = 1;
         $user->highscore = 0;
         $user->games_played = 0;
         $user->games_won = 0;
         $user->players_killed = 0;
+
+        $user->save();
+
+        $pivotData = [
+            'unlocked_at' => Carbon::now(),
+        ];
+        foreach(Skin::all() as $skin) {
+            $user->skins()->attach($skin->id, $pivotData);
+        }
 
         $user->save();
 

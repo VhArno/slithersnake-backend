@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     // relations
     public function skins(): BelongsToMany {
-        return $this->belongsToMany(Skin::class);
+        return $this->belongsToMany(Skin::class, 'users_has_skins', 'users_id', 'skins_id');
     }
 
     public function duels(): BelongsToMany {
