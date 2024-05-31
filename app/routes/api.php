@@ -50,3 +50,6 @@ Route::post('/duels', [GameController::class, 'createDuels']);
 Route::patch('/duels', [GameController::class, 'patchDuel']);
 
 Route::post('/user/duel', [GameController::class, 'addDuelUser'])->middleware('auth:sanctum');
+
+// leaderboard routes
+Route::get('/leaderboard', [AuthController::class, 'getLeaderboard']);

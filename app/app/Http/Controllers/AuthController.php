@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -108,5 +109,35 @@ class AuthController extends Controller
         $user = $request->user();
         $user->delete();
         return response(['message' => 'User deleted'], 200);
+    }
+
+    public function getLeaderboard(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'sort' => 'nullable|string|in:level,highscore,winrate',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $query = User::query();
+
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'level':
+                    $query->orderBy('level', 'desc');
+                    break;
+                case 'highscore':
+                    $query->orderBy('highscore', 'desc');
+                    break;
+                case 'winrate':
+                    $query->orderBy(DB::raw('IF(games_played = 0, 0, (games_won / games_played))'), 'desc');
+                break;
+            }
+        } else {
+            $query->orderBy('highscore', 'desc');
+        }        
+
+        return response()->json(['data' => UserResource::collection($query->take(10)->get())]);
     }
 }
