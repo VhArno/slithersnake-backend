@@ -15,29 +15,29 @@ class SkinSeeder extends Seeder
     {
         Skin::create([
             'name' => 'skin 1',
-            'image_head' => 'http://localhost:8080/storage/skin1_head.svg',
-            'image_body' => 'http://localhost:8080/storage/skin1_body.svg',
+            'image_head' => '/storage/skin1_head.svg',
+            'image_body' => '/storage/skin1_body.svg',
             'featured' => 1
         ]);
 
         Skin::create([
             'name' => 'skin 2',
-            'image_head' => 'http://localhost:8080/storage/skin2_head.svg',
-            'image_body' => 'http://localhost:8080/storage/skin2_body.svg',
+            'image_head' => '/storage/skin2_head.svg',
+            'image_body' => '/storage/skin2_body.svg',
             'featured' => 2
         ]);
 
         Skin::create([
             'name' => 'skin 3',
-            'image_head' => 'http://localhost:8080/storage/skin3_head.svg',
-            'image_body' => 'http://localhost:8080/storage/skin3_body.svg',
+            'image_head' => '/storage/skin3_head.svg',
+            'image_body' => '/storage/skin3_body.svg',
             'featured' => 3
         ]);
 
         Skin::create([
             'name' => 'skin 4',
-            'image_head' => 'http://localhost:8080/storage/skin4_head.svg',
-            'image_body' => 'http://localhost:8080/storage/skin4_body.svg',
+            'image_head' => '/storage/skin4_head.svg',
+            'image_body' => '/storage/skin4_body.svg',
             'featured' => 4
         ]);
     }
