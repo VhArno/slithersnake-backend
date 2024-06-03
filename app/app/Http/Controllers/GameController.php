@@ -22,7 +22,7 @@ class GameController extends Controller
     }
 
     function getAllSkins() {
-        return SkinResource::collection(Skin::all());
+        return SkinResource::collection(Skin::where('featured', true)->get());
     }
 
     function getFeaturedSkins() {
