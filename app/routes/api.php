@@ -37,9 +37,7 @@ Route::group(['prefix' => '/maps'], function() {
 });
 
 // user routes
-Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 
 Route::get('/user', [AuthController::class, 'getUser'])->middleware('auth:sanctum');
 Route::patch('/user', [AuthController::class, 'patchUser'])->middleware('auth:sanctum');
